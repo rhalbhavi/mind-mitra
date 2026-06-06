@@ -1,5 +1,7 @@
-import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
-import { getProfile, UserProfile } from '../api/auth';
+import * as React from 'react';
+import { createContext, useState, useContext, useEffect, useCallback } from 'react';
+import { getProfile } from '../api/auth';
+import type { UserProfile } from '../api/auth';
 
 const TOKEN_KEY = 'token';
 const REFRESH_TOKEN_KEY = 'refresh_token';
@@ -17,6 +19,7 @@ type AppContextType = {
   loadingUser: boolean;
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const AppContext = createContext<AppContextType>({
   darkMode: false,
   setDarkMode: () => {},
@@ -113,4 +116,5 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAppContext = () => useContext(AppContext);

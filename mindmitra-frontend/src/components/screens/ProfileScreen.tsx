@@ -13,8 +13,8 @@ import {
   X,
 } from 'lucide-react';
 import { useAppContext } from '../../context/AppContext';
+import type { EmergencyContact } from '../../api/auth';
 import {
-  EmergencyContact,
   updateProfile,
   uploadProfilePicture,
 } from '../../api/auth';
@@ -28,6 +28,16 @@ const EMPTY_CONTACT: EmergencyContact = {
 
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
 const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+
+function axiosErrorMessage(err: unknown): string | null {
+  if (typeof err === 'object' && err !== null && 'response' in err) {
+    const response = (err as { response?: { data?: { detail?: string } } }).response;
+    if (typeof response?.data?.detail === 'string') {
+      return response.data.detail;
+    }
+  }
+  return null;
+}
 
 interface ProfileScreenProps {
   onLogoutComplete?: () => void;
@@ -384,15 +394,5 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ onLogoutComplete }) => {
     </div>
   );
 };
-
-function axiosErrorMessage(err: unknown): string | null {
-  if (typeof err === 'object' && err !== null && 'response' in err) {
-    const response = (err as { response?: { data?: { detail?: string } } }).response;
-    if (typeof response?.data?.detail === 'string') {
-      return response.data.detail;
-    }
-  }
-  return null;
-}
 
 export default ProfileScreen;
